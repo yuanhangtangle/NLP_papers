@@ -8,7 +8,8 @@
 
 > @datetime: 2021/04/03
 >
-> @link: https://arxiv.org/abs/1711.01731
+> [link](https://arxiv.org/abs/1711.01731)
+> [click for local file](./A_Survey_on_Dialogue_Systems_Recent_Advances_and_New_Frontiers.pdf)
 
 This paper gives an overview to dialogue systems. More specifically, this paper categorizes DS into two main kinds: task-oriented system and non-task-oriented system. See the graph below for more details:
 
@@ -97,13 +98,13 @@ Take with the user on open domains; Chatting robot such as Xiaoai, Siri, etc
 ## An introduction to ROC analysis
 >@datetime: 2021/04/17
 >
-> @link: https://www.researchgate.net/publication/222511520_Introduction_to_ROC_analysis/link/5ac7844ca6fdcc8bfc7fa47e/download
->
-> 我决定还是写中文, 高效方便. 
+> [link](https://www.researchgate.net/publication/222511520_Introduction_to_ROC_analysis/link/5ac7844ca6fdcc8bfc7fa47e/download)
+> 
+> [click for local file](./ROCintro.pdf)
+> 
+> 我决定还是写中文, 高效方便. 这篇文章只简单看了ROC曲线和AUC的含义. 
 
-这篇文章只简单看了ROC曲线和AUC的含义. 
-
-ROC曲线纵轴为`TPR`, 横轴为`FPR`. 这两个指标都以预测正样本为研究对象, 这种思维其实默认了正样本具有更高的重要性. 具体的: 
+- **基本指标**: ROC曲线纵轴为`TPR`, 横轴为`FPR`. 这两个指标都以预测正样本为研究对象, 这种思维其实默认了正样本具有更高的重要性. 具体的: 
 
 $$
 TPR = \frac{TP}{P} = \frac{TP}{TP + FN}\\
@@ -111,16 +112,29 @@ TPR = \frac{TP}{P} = \frac{TP}{TP + FN}\\
 FPR = \frac{FP}{N} = \frac{FP}{FP + TN}
 $$
 
-- `TPR` 衡量准确的正样本预测, 描述模型是否能够正确的预测正样本; `FPR`衡量错误的正样本预测, 描述模型是否会错误的将负样本预测为正样本. 两个指标综合描述了模型对正样本的预测的合理程度. 理想地, `TPR`应该尽可能高, `FPR`应该尽可能低. 
+- **直观认识**: `TPR` 衡量准确的正样本预测, 描述模型是否能够正确的预测正样本; `FPR`衡量错误的正样本预测, 描述模型是否会错误的将负样本预测为正样本. 两个指标综合描述了模型对正样本的预测的合理程度. 理想地, `TPR`应该尽可能高, `FPR`应该尽可能低. 模型越倾向于预测正样本, 则`TPR`越可能大, 但是`FPR`也会随之变大, 故而ROC曲线右上角的点较为"激进", 而左下角的点较为"保守"
 
-- 在ROC曲线图上, 位于`y = x`左上角的点满足`TPR > FPR`, 位于右下角上的点通过反转预测标记可以映射到左上角. 位于对角线上的点可以理解为随机猜测, 正负样本的预测正样本都是是对错参半.
+- **基准**: 在ROC曲线图上, 位于`y = x`左上角的点满足`TPR > FPR`, 位于右下角上的点通过反转预测标记可以映射到左上角. 位于对角线上的点可以理解为随机猜测, 正负样本的预测正样本都是是对错参半. 从这个理解可以看出, ROC曲线的基准为对角线, 也就是, **任何一个样本都以1/2的概率预测为正样本**. 
 
-- 模型越倾向于预测正样本, 则`TPR`越可能大, 但是`FPR`也会随之变大, 故而ROC曲线右上角的点较为"激进", 而左下角的点较为"保守"
+- **绘制方法**: 对于输出置信度的模型, ROC曲线的绘制通过改变阈值进行. 具体的, 根据样本置信度从高到低排列. 开始将阈值设定为最高使得所有样本都被预测为负样本, 每次往后新增一个正样本, 并在ROC图上, 绘制直到所有样本都被预测为正样本. 这样得到的ROC曲线可以理解为对模型实际ROC曲线的近似. 
 
-- 对于输出置信度的模型, ROC曲线的绘制通过改变阈值进行. 具体的, 根据样本置信度从高到低排列. 开始将阈值设定为最高使得所有样本都被预测为负样本, 每次往后新增一个正样本, 并在ROC图上, 绘制直到所有样本都被预测为正样本.
+- **AUC**: 绘制的ROC曲线下方的面积. 如果有样本置信度从高到低的序列 $x_1, x_2, ..., x_m$, 对应的真实标记序列 $y_1, y_2, ..., y_m$, 正样本数量 $P$, 负样本数量 $N$ 可以推导出:
+	$$
+		AUC = \frac{\sum_{i<j} \mathbb{1}\{ y_i = 1 \wedge y_j = -1 \}}{PN}	
+	$$
+	这其实就是: 从序列中任取一个正样本和一个负样本, 模型会给予正样本更高置信度的概率. 这个概率其实就是对**模型认为正样本比负样本更像正样本的概率**的估计.
 
-- 这样得到的ROC曲线可以理解为对模型实际ROC曲线的近似. AUC则是绘制的ROC曲线下方的面积. 如果有样本置信度从高到低的序列 $x_1, x_2, ..., x_m$, 对应的真实标记序列 $y_1, y_2, ..., y_m$, 正样本数量 $P$, 负样本数量 $N$ 可以推导出:
-$$
-	AUC = \frac{\sum_{i<j} \mathbb{1}\{ y_i = 1 \wedge y_j = -1 \}}{PN}
-$$
-这其实就是: 从序列中任取一个正样本和一个负样本, 模型会基于负样本更高置信度的概率. 这个概率其实就是对**模型认为正样本比负样本更像正样本的概率**的估计.
+- **进一步讨论**: `TPR`和`FPR`其实都是以真实标记的统计为分母, 故这两个指标其实都是反映了预测正样本符合真实标记的程度. 而精准率`PREC`定义为:
+  $$
+  PREC = \frac{TP}{TP + FP}
+  $$
+  即正确的预测正样本占预测正样本的概率. 这个指标则是反映预测正样本用于进一步分析处理的可靠度. 将`PREC`和`TPR(REC)`结合起来则可以绘制`PRC`, 得到另一个图. ROC曲线的基准是1/2随机分配, 对于不均衡样本而言, 这个基准显然并不合理, 因为我们显然可以以更高的概率预测占比较高的标记. `PRC`曲线则针对此进行了的修正.
+  
+## The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets
+> @datetime: 2021/4/17
+> 
+> [link](https://www.researchgate.net/publication/273155496_The_Precision-Recall_Plot_Is_More_Informative_than_the_ROC_Plot_When_Evaluating_Binary_Classifiers_on_Imbalanced_Datasets)
+> 
+> [click for local file](./PRC_imbalanced_dataset.pdf)
+> 
+
