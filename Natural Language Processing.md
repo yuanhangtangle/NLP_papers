@@ -85,13 +85,13 @@ We first deal with the first kind. The basic procedure is:
 
 - **Locate a misspelled word**.
 - **Enumerate similar words**. This can be done by compute **minimum editing distance**  between two words, and drop those that are not in the vocabulary. The remaining are the candidate words.
--  **Calculate the probability** of each word and choose the best ones. This can be done by directly compute the frequency of each candidate. A better way is to use the surrounding words to predict the probability of each word occurring in this context. We will address this issue later.
+- **Calculate the probability** of each word and choose the best ones. This can be done by directly compute the frequency of each candidate. A better way is to use the surrounding words to predict the probability of each word occurring in this context. We will address this issue later.
 
 ------------------
 
 ## POS tagging
 
-part of speech tagging, or POS tagging, refers to a technique that tags the category of each word in a sentence. For example, 'see' is a verb, 'network' is a noun, etc. **Hidden Markov model** can be applied to predict the POS tag of a given word based on the previous word.
+Part of speech tagging, or POS tagging, refers to a technique that tags the category of each word in a sentence. For example, 'see' is a verb, 'network' is a noun, etc. **Hidden Markov model** can be applied to predict the POS tag of a given word based on the previous word.
 
 - **HMM**: Model the POS tag of a word as a hidden state and the word as a observation. Then the classic HMM model can be applied
 
@@ -161,4 +161,10 @@ A N-gram is a consecutive sequence of words.
 
 - **Unseen N-gram**: In practice, we frequently meet unseen N-grams in the input, and the probability of a sentence containing unseen N-grams will be considered as 0, which is not reasonable. 
   - One way to address this is to apply **Laplace Smoothing** to the model. That's, when counting the occurring times of a N-gram, we add 1 to the result, and set occurring time of the unseen N-gram as 1. The generalized smoothing method is **add k smoothing** where we add k rather than 1.
-  - **Interplotation**: 
+  - **Interplotation**: While long grams may often be missing in the training set, shorter grams are more likely to occur. So one idea to deal with missing grams is to replace it with a shorter grams that ends in the same position. A generalized idea is **interpolation**, which use the weighted average of 1-gram to N-gram rather than simply use N-gram.
+
+---------------------------
+## Word Embedding
+>  我决定还是写中文. 怎么会有人喜欢写英文呢????
+
+- **向量表示(矩阵表示)**: 计算智能的基本要求是, 待处理的对象具有优良的数值表示, 即需要使用计算机能够处理的数据结构对概念进行表示. 针对不同的问题, 需要设计不同的表征形式, 其中最常见的就是不同形式的向量或者矩阵. 在标准的ML范式中, 每个样本总是通过一个向量表示, 向量的每个元素都被认为具有一定的含义. 在传统的统计分析或者统计学习中, 这种表示是人为设计的. 然而人类对数据表示的理解仍然处于相当粗浅的阶段, 许多复杂的问题的数据表示的设计难以实现. 在表示设计中, 往往会出现信息缺失或者信息冗余的问题. 后者可以通过降维缓解, 而前者往往导致模型无法获取充分的信息解决问题, 从而需要重新设计表示. 以人工神经网络为代表的表征学习尝试通过设计任务来获取信息的表征. 一般而言, 一个神经网络以一种粗浅简单的表示为输入, 在一定的设计(问题的选择, 网络结构的约束, 正则项的引入等等)下拟合参数, 并最终输出一个与问题相关的表示. 这个表示往往含有更容易使用的信息.  
